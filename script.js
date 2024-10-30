@@ -98,7 +98,6 @@ inputTextElem.addEventListener("input", (e) => {
   if (inputTextElem.value.length > 5000) {
     inputTextElem.value = inputTextElem.value.slice(0, 5000); // Restrict length
   }
-  translate(); // Translate as user types
 });
 
 // Document upload handler to read and display file content in input area
