@@ -81,6 +81,7 @@ function translate() {
   
   fetch(url, options)
     .then((response) => {
+      
       if (response.status !== 200) {
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -108,7 +109,6 @@ inputTextElem.addEventListener("input", debounce((e) => {
   if (inputTextElem.value.length > 5000) {
     inputTextElem.value = inputTextElem.value.slice(0, 5000);
   }
-  translate();
 }, 300));
 
 // Document upload handler
@@ -133,6 +133,12 @@ uploadDocument.addEventListener("change", (e) => {
   } else {
     alert("Please upload a valid file");
   }
+});
+
+// JavaScript: Add event listener for translate button
+document.addEventListener('DOMContentLoaded', () => {
+  const translateBtn = document.querySelector('.translate-btn');
+  translateBtn.addEventListener('click', translate);
 });
 
 // Download button functionality
