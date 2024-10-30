@@ -164,12 +164,13 @@ inputTextElem.addEventListener("input", () => {
   inputChars.innerHTML = inputTextElem.value.length;
 });
 
-// Side panel open/close functions
-function openSidePanel() {
+// Function to open the side panel
+function openFavPanel() {
   document.getElementById("sidePanel").classList.add("open");
 }
 
-function closeSidePanel() {
+// Function to close the side panel
+function closeFavPanel() {
   document.getElementById("sidePanel").classList.remove("open");
 }
 

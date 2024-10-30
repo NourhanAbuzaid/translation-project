@@ -60,8 +60,11 @@
             <!-- Text Input -->
             <div class="text-area">
                 <textarea id="input-text" cols="30" rows="10" placeholder="ادخل النص هنا..."></textarea>
-                <div class="chars"><span id="input-chars">0</span> / 5000</div>
-                <button onclick="translate()" class="translate-btn">Translate</button>
+                <div class="chars">
+                    <button onclick="translate()" class="translate-btn">Translate</button>
+                    <span id="input-chars">0</span> / 5000
+                </div>
+
             </div>
 
             <!-- File Upload -->
@@ -123,41 +126,35 @@
 
     </div>
 
-            <!-- Additional Features -->
-            <div class="additional">
-                <div class="icon-container">
-                    <div class="icon-circle">
-                      <ion-icon name="time"></ion-icon>
-                    </div>
-                    <p>History</p>
-                  </div>
-                  
-                  <div class="icon-container">
-                    <div class="icon-circle">
-                      <ion-icon name="star"></ion-icon>
-                    </div>
-                    <p>Favourite</p>
-                  </div>              
-             </div>
+    <!-- Additional Features -->
+    <div class="additional">
+        <div class="icon-container">
+            <div onclick="openFavPanel()" class="icon-circle">
+                <ion-icon name="time"></ion-icon>
+            </div>
+            <p>History</p>
+        </div>
 
-             <!-- Side Panel [Test] -->
-             <div class="page">
-                <button onclick="openSidePanel()" class="open-button">Open Panel</button>
-                
-                <!-- Main Content -->
-                <div class="main-content">
-                  <h1>Main Content Area</h1>
-                  <p>This is your main content.</p>
-                </div>
-                
-                <!-- Side Panel -->
-                <div id="sidePanel" class="side-panel">
-                  <button onclick="closeSidePanel()" class="close-button">&times;</button>
-                  <h2>Side Panel Content</h2>
-                  <p>This content appears in a sliding panel on the side.</p>
-                </div>
-              </div>
-              
+        <div class="icon-container">
+            <div class="icon-circle">
+                <ion-icon name="star"></ion-icon>
+            </div>
+            <p>Favourite</p>
+        </div>
+    </div>
+
+    <!-- Side Panel [Test] -->
+    <div class="page">
+
+
+        <!-- Side Panel -->
+        <div id="sidePanel" class="side-panel">
+            <button onclick="closeFavPanel()" class="close-button">&times;</button>
+            <h2>Side Panel Content</h2>
+            <p>This content appears in a sliding panel on the side.</p>
+        </div>
+    </div>
+
 
     <script src="languages.js"></script>
     <script src="script.js"></script>
