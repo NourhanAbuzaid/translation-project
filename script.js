@@ -149,11 +149,11 @@ inputTextElem.addEventListener("input", (e) => {
 });
 
 // Function to open the side panel
-function openSidePanel() {
+function openFavPanel() {
   document.getElementById("sidePanel").classList.add("open");
 }
 
 // Function to close the side panel
-function closeSidePanel() {
+function closeFavPanel() {
   document.getElementById("sidePanel").classList.remove("open");
 }
