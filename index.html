@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Arabic Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <title>First Mini Project</title>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="content">
+            <div class="logo">
+                <a href="index.html">
+                    <ion-icon name="language"></ion-icon>
+                    <span class="title">المـــترجـــم</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Input Card -->
+        <div class="card input-wrapper">
+
+            <!-- Heading -->
+            <div class="from">
+                <span class="heading">من:</span>
+
+                <!-- Dropdown -->
+                <div class="dropdown-container" id="input-language">
+                    <div class="dropdown-toggle">
+                        <ion-icon name="globe-outline"></ion-icon>
+                        <span class="selected" data-value="rb">الرباط</span> <!-- Default selected option -->
+                        <ion-icon name="chevron-down-outline"></ion-icon>
+                    </div>
+                    <ul class="dropdown-menu">
+                        <li class="option active">الرباط</li>
+                        <li class="option">القاهرة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Text Input -->
+            <div class="text-area">
+                <textarea id="input-text" cols="30" rows="10" placeholder="ادخل النص هنا..."></textarea>
+                <div class="chars"><span id="input-chars">0</span> / 5000</div>
+            </div>
+
+            <!-- File Upload -->
+            <div class="card-bottom">
+                <p>او قــم برفــع المــلف</p>
+                <label for="upload-document">
+                    <span id="upload-title">اختر ملف</span>
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                    <input type="file" id="upload-document" hidden />
+                </label>
+            </div>
+
+        </div>
+
+        <!-- Swapping Button -->
+        <div class="center">
+            <div class="swap-position">
+                <ion-icon name="swap-horizontal-outline"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Output Card -->
+        <div class="card output-wrapper">
+
+            <!-- Heading -->
+            <div class="to">
+                <span class="heading">إلي:</span>
+
+                <!-- Dropdown -->
+                <div class="dropdown-container" id="output-language">
+                    <div class="dropdown-toggle">
+                        <ion-icon name="globe-outline"></ion-icon>
+                        <span class="selected" data-value="cr">القاهرة</span> <!-- Default selected option -->
+                        <ion-icon name="chevron-down-outline"></ion-icon>
+                    </div>
+                    <ul class="dropdown-menu">
+                        <li class="option active">القاهرة</li>
+                        <li class="option">الرباط</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Text Output -->
+            <div class="text-area">
+                <textarea id="output-text" cols="30" rows="10" placeholder="النص المترجم سيظهر هنا..."></textarea>
+                <ion-icon name="star-outline"></ion-icon>
+            </div>
+
+            <!-- File Download -->
+            <div class="card-bottom">
+                <p>تنزيل الملف</p>
+                <button id="download-btn">
+                    <span>تنزيل</span>
+                    <ion-icon name="cloud-download-outline"></ion-icon>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+            <!-- Additional Features -->
+            <div class="additional">
+                <div class="icon-container">
+                    <div class="icon-circle">
+                      <ion-icon name="time"></ion-icon>
+                    </div>
+                    <p>History</p>
+                  </div>
+                  
+                  <div class="icon-container">
+                    <div class="icon-circle">
+                      <ion-icon name="star"></ion-icon>
+                    </div>
+                    <p>Favourite</p>
+                  </div>              
+             </div>
+
+             <!-- Side Panel [Test] -->
+             <div class="page">
+                <button onclick="openSidePanel()" class="open-button">Open Panel</button>
+                
+                <!-- Main Content -->
+                <div class="main-content">
+                  <h1>Main Content Area</h1>
+                  <p>This is your main content.</p>
+                </div>
+                
+                <!-- Side Panel -->
+                <div id="sidePanel" class="side-panel">
+                  <button onclick="closeSidePanel()" class="close-button">&times;</button>
+                  <h2>Side Panel Content</h2>
+                  <p>This content appears in a sliding panel on the side.</p>
+                </div>
+              </div>
+              
+
+    <script src="languages.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
