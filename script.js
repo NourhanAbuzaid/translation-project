@@ -1,27 +1,10 @@
-// Select all dropdown containers for languages, input and output language dropdowns
 const dropdowns = document.querySelectorAll(".dropdown-container"),
   inputLanguageDropdown = document.querySelector("#input-language"),
   outputLanguageDropdown = document.querySelector("#output-language");
 
-// Populate dropdown options for language selection
-function populateDropdown(dropdown, options) {
-  dropdown.querySelector("ul").innerHTML = ""; // Clear existing options
-  options.forEach((option) => {
-    const li = document.createElement("li"); // Create list item for each language
-    li.innerHTML = option.name; // Set option name
-    li.dataset.value = option.code; // Set data value as language code
-    li.classList.add("option"); // Add styling class
-    dropdown.querySelector("ul").appendChild(li); // Add to dropdown menu
-  });
-}
-
-// Populate both input and output language dropdowns with languages array
-populateDropdown(inputLanguageDropdown, languages);
-populateDropdown(outputLanguageDropdown, languages);
-
 // Toggle dropdown visibility and handle language selection
 dropdowns.forEach((dropdown) => {
-  dropdown.addEventListener("click", (e) => {
+  dropdown.addEventListener("click", () => {
     dropdown.classList.toggle("active"); // Toggle active state
   });
 
@@ -35,6 +18,7 @@ dropdowns.forEach((dropdown) => {
       const selected = dropdown.querySelector(".selected"); // Find selected display element
       selected.innerHTML = item.innerHTML; // Set display to selected language
       selected.dataset.value = item.dataset.value; // Store selected language code
+      
       translate(); // Call translate function on selection
     });
   });
@@ -49,7 +33,6 @@ document.addEventListener("click", (e) => {
   });
 });
 
-// Select swap button, input and output language, text elements
 const swapBtn = document.querySelector(".swap-position"),
   inputLanguage = inputLanguageDropdown.querySelector(".selected"),
   outputLanguage = outputLanguageDropdown.querySelector(".selected"),
@@ -57,18 +40,15 @@ const swapBtn = document.querySelector(".swap-position"),
   outputTextElem = document.querySelector("#output-text");
 
 // Swap input/output languages and text
-swapBtn.addEventListener("click", (e) => {
-  // Swap selected languages
+swapBtn.addEventListener("click", () => {
   const temp = inputLanguage.innerHTML;
   inputLanguage.innerHTML = outputLanguage.innerHTML;
   outputLanguage.innerHTML = temp;
 
-  // Swap language codes
   const tempValue = inputLanguage.dataset.value;
   inputLanguage.dataset.value = outputLanguage.dataset.value;
   outputLanguage.dataset.value = tempValue;
 
-  // Swap input and output text
   const tempInputText = inputTextElem.value;
   inputTextElem.value = outputTextElem.value;
   outputTextElem.value = tempInputText;
@@ -76,85 +56,186 @@ swapBtn.addEventListener("click", (e) => {
   translate(); // Re-translate after swapping
 });
 
-// Translate function: fetches translation from Google Translate API
 function translate() {
-  const inputText = inputTextElem.value; // Get user input text
-  const inputLanguage = inputLanguageDropdown.querySelector(".selected").dataset.value; // Input language code
-  const outputLanguage = outputLanguageDropdown.querySelector(".selected").dataset.value; // Output language code
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inputLanguage}&tl=${outputLanguage}&dt=t&q=${encodeURI(inputText)}`;
+  const inputText = inputTextElem.value;
+  const inputLanguage = inputLanguageDropdown.querySelector(".selected");
+  const sourceLanguageId = inputLanguage.getAttribute("data-id");
 
-  fetch(url)
-    .then((response) => response.json()) // Parse JSON from response
-    .then((json) => {
-      outputTextElem.value = json[0].map((item) => item[0]).join(""); // Display translated text
+  const outputLanguage = outputLanguageDropdown.querySelector(".selected");
+  const targetLanguageId = outputLanguage.getAttribute("data-id");
+
+  const url = 'https://localhost:7299/api/TranslationLogs';
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + authToken
+    },
+    body: JSON.stringify({
+      sourceLanguageId: parseInt(sourceLanguageId),
+      targetLanguageId: parseInt(targetLanguageId),
+      sourceText: inputText
+    })
+  };
+  
+  fetch(url, options)
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      outputTextElem.value = data.translation.targetText;
     })
     .catch((error) => {
-      console.log(error); // Log errors
+      console.log(error);
     });
 }
 
-// Limit input text to 5000 characters and trigger translation on input
-inputTextElem.addEventListener("input", (e) => {
-  if (inputTextElem.value.length > 5000) {
-    inputTextElem.value = inputTextElem.value.slice(0, 5000); // Restrict length
-  }
-  translate(); // Translate as user types
-});
+// Debounce function to control the rate of translation calls
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
 
-// Document upload handler to read and display file content in input area
+// Event listener for input text with debounce
+inputTextElem.addEventListener("input", debounce((e) => {
+  if (inputTextElem.value.length > 5000) {
+    inputTextElem.value = inputTextElem.value.slice(0, 5000);
+  }
+  translate();
+}, 300));
+
+// Document upload handler
 const uploadDocument = document.querySelector("#upload-document"),
   uploadTitle = document.querySelector("#upload-title");
 
 uploadDocument.addEventListener("change", (e) => {
-  const file = e.target.files[0]; // Select uploaded file
-  // Check file type and read as text if valid
+  const file = e.target.files[0];
   if (
     file.type === "application/pdf" ||
     file.type === "text/plain" ||
     file.type === "application/msword" ||
     file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-    uploadTitle.innerHTML = file.name; // Display file name
-    const reader = new FileReader(); // Create file reader
-    reader.readAsText(file); // Read file as text
+    uploadTitle.innerHTML = file.name;
+    const reader = new FileReader();
+    reader.readAsText(file);
     reader.onload = (e) => {
-      inputTextElem.value = e.target.result; // Display file content
-      translate(); // Translate after loading
+      inputTextElem.value = e.target.result;
+      translate();
     };
   } else {
-    alert("Please upload a valid file"); // Alert if invalid
+    alert("Please upload a valid file");
   }
 });
 
-// Download button functionality for translated text
+// Download button functionality
 const downloadBtn = document.querySelector("#download-btn");
 
-downloadBtn.addEventListener("click", (e) => {
+downloadBtn.addEventListener("click", () => {
   const outputText = outputTextElem.value;
   const outputLanguage = outputLanguageDropdown.querySelector(".selected").dataset.value;
   if (outputText) {
-    const blob = new Blob([outputText], { type: "text/plain" }); // Create text file
-    const url = URL.createObjectURL(blob); // Create download link
+    const blob = new Blob([outputText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.download = `translated-to-${outputLanguage}.txt`; // Set download file name
+    a.download = `translated-to-${outputLanguage}.txt`;
     a.href = url;
-    a.click(); // Trigger download
+    a.click();
   }
 });
 
 // Display input text character count
 const inputChars = document.querySelector("#input-chars");
 
-inputTextElem.addEventListener("input", (e) => {
-  inputChars.innerHTML = inputTextElem.value.length; // Update character count
+inputTextElem.addEventListener("input", () => {
+  inputChars.innerHTML = inputTextElem.value.length;
 });
 
-// Function to open the side panel
+// Side panel open/close functions
 function openSidePanel() {
   document.getElementById("sidePanel").classList.add("open");
 }
 
-// Function to close the side panel
 function closeSidePanel() {
   document.getElementById("sidePanel").classList.remove("open");
 }
+
+// Fetching languages and populating dropdowns
+const authToken = localStorage.getItem('authToken');
+let languages = [];
+
+async function fetchLanguages() {
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + authToken
+    }
+  };
+
+  try {
+    const response = await fetch('https://localhost:7299/api/Languages', options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    languages = data.languages;
+    populateDropdowns();
+  } catch (error) {
+    console.error('Error fetching languages:', error);
+  }
+}
+
+function populateDropdowns() {
+  const inputDropdown = document.querySelector('#input-language .dropdown-menu');
+  const outputDropdown = document.querySelector('#output-language .dropdown-menu');
+  
+  inputDropdown.innerHTML = '';
+  outputDropdown.innerHTML = '';
+
+  languages.forEach(language => {
+    const inputOptionItem = `<li class="option" data-id="${language.languageId}" data-value="${language.languageCode}">${language.languageName}</li>`;
+    const outputOptionItem = `<li class="option" data-id="${language.languageId}" data-value="${language.languageCode}">${language.languageName}</li>`;
+    
+    inputDropdown.insertAdjacentHTML('beforeend', inputOptionItem);
+    outputDropdown.insertAdjacentHTML('beforeend', outputOptionItem);
+  });
+
+  if (languages.length > 0) {
+    setDefaultLanguage('#input-language', languages[0]);
+    setDefaultLanguage('#output-language', languages[1]);
+  }
+
+  addDropdownListeners();
+}
+
+function setDefaultLanguage(selector, language) {
+  const selected = document.querySelector(`${selector} .dropdown-toggle .selected`);
+  selected.textContent = language.languageName;
+  selected.setAttribute('data-value', language.languageCode);
+  selected.setAttribute('data-id', language.languageId);
+}
+
+function addDropdownListeners() {
+  document.querySelectorAll('.dropdown-menu .option').forEach(option => {
+    option.addEventListener('click', function () {
+      const dropdownToggle = this.closest('.dropdown-container').querySelector('.dropdown-toggle .selected');
+      dropdownToggle.textContent = this.textContent;
+      dropdownToggle.setAttribute('data-value', this.getAttribute('data-value'));
+      dropdownToggle.setAttribute('data-id', this.getAttribute('data-id'));
+
+      translate(); // Trigger translation on selection
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetchLanguages();
+});
