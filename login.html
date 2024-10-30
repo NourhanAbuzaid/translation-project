@@ -5,21 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
+        :root {
+            --primary-color: #e04981;
+            --bg-color: #f5f5f5;
+            --light-bg-color: #fff;
+            --text-color: #1a1a1a;
+            --light-text-color: #bcbcbc;
+            --primary-text-color: #fff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: "IBM Plex Sans Arabic", sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         .login-container {
             width: 400px;
-            background-color: white;
+            background-color: var(--light-bg-color);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -44,16 +54,16 @@
             box-sizing: border-box;
             font-size: 16px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 10px;
         }
 
         .login-btn {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
         }
@@ -74,7 +84,7 @@
         }
     
         a {
-            color: #28a745;
+            color: var(--primary-color);
         }
     </style>
 </head>
