@@ -59,7 +59,7 @@
 
             <!-- Text Input -->
             <div class="text-area">
-                <textarea id="input-text" cols="30" rows="10" placeholder="ادخل النص هنا..."></textarea>
+                <textarea dir="auto" id="input-text" cols="30" rows="10" placeholder="ادخل النص هنا..."></textarea>
                 <div class="chars">
                     <button onclick="translate()" class="translate-btn">Translate</button>
                     <span id="input-chars">0</span> / 5000
@@ -109,7 +109,7 @@
 
             <!-- Text Output -->
             <div class="text-area">
-                <textarea id="output-text" cols="30" rows="10" placeholder="النص المترجم سيظهر هنا..."></textarea>
+                <textarea dir="auto" id="output-text" cols="30" rows="10" placeholder="النص المترجم سيظهر هنا..."></textarea>
                 <button id="fav-btn">
                     <ion-icon name="star-outline"></ion-icon>
                 </button>
@@ -150,15 +150,22 @@
         <!-- History Side Panel -->
         <div id="historyPanel" class="side-panel">
             <button onclick="closeHistPanel()" class="close-button">&times;</button>
-            <h2>History</h2>
-            <p>This content appears in a sliding panel on the side.</p>
+            <br>
+            <div dir="auto" class="history">
+                <h2>History</h2>
+                <ul id="historyList" class="list"></ul>
+            </div>
         </div>
 
         <!-- Favourite Side Panel -->
         <div id="favPanel" class="side-panel">
             <button onclick="closeFavPanel()" class="close-button">&times;</button>
-            <h2>Favourite</h2>
-            <p>This content appears in a sliding panel on the side.</p>
+            <br>
+
+            <div dir="auto" class="favorites">
+                <h2>Favorites</h2>
+                <ul id="favoritesList" class="list"></ul>
+            </div>
         </div>
     </div>
 
