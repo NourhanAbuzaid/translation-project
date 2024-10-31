@@ -496,7 +496,7 @@ body {
   
   /* Hover effect */
   .delete-btn:hover {
-    color: var(--primary-color);
+    color: var(--light-bg-color);
   }
   
   /* Active effect (when clicked) */
@@ -517,7 +517,7 @@ body {
   
   /* Hover effect */
   .fav-btn:hover {
-    color: var(--primary-color);                  
+    color: var(--light-bg-color);                  
   }
   
   /* Active effect (when clicked) */
