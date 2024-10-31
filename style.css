@@ -347,6 +347,11 @@ body {
     color: var(--light-text-color);
 }
 
+.text-area ion-icon:hover {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
 /* General container styling */
 .icon-container {
     display: inline-flex;

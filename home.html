@@ -110,7 +110,9 @@
             <!-- Text Output -->
             <div class="text-area">
                 <textarea id="output-text" cols="30" rows="10" placeholder="النص المترجم سيظهر هنا..."></textarea>
-                <ion-icon name="star-outline"></ion-icon>
+                <button id="fav-btn">
+                    <ion-icon name="star-outline"></ion-icon>
+                </button>
             </div>
 
             <!-- File Download -->
@@ -129,28 +131,33 @@
     <!-- Additional Features -->
     <div class="additional">
         <div class="icon-container">
-            <div onclick="openFavPanel()" class="icon-circle">
+            <div onclick="openHistPanel()" class="icon-circle">
                 <ion-icon name="time"></ion-icon>
             </div>
             <p>History</p>
         </div>
 
         <div class="icon-container">
-            <div class="icon-circle">
+            <div onclick="openFavPanel()" class="icon-circle">
                 <ion-icon name="star"></ion-icon>
             </div>
             <p>Favourite</p>
         </div>
     </div>
 
-    <!-- Side Panel [Test] -->
+    <!-- Side Panel -->
     <div class="page">
+        <!-- History Side Panel -->
+        <div id="historyPanel" class="side-panel">
+            <button onclick="closeHistPanel()" class="close-button">&times;</button>
+            <h2>History</h2>
+            <p>This content appears in a sliding panel on the side.</p>
+        </div>
 
-
-        <!-- Side Panel -->
-        <div id="sidePanel" class="side-panel">
+        <!-- Favourite Side Panel -->
+        <div id="favPanel" class="side-panel">
             <button onclick="closeFavPanel()" class="close-button">&times;</button>
-            <h2>Side Panel Content</h2>
+            <h2>Favourite</h2>
             <p>This content appears in a sliding panel on the side.</p>
         </div>
     </div>
@@ -159,5 +166,4 @@
     <script src="languages.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>

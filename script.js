@@ -165,13 +165,23 @@ inputTextElem.addEventListener("input", () => {
 });
 
 // Function to open the side panel
+function openHistPanel() {
+  document.getElementById("historyPanel").classList.add("open");
+}
+
+// Function to close the side panel
+function closeHistPanel() {
+  document.getElementById("historyPanel").classList.remove("open");
+}
+
+// Function to open the side panel
 function openFavPanel() {
-  document.getElementById("sidePanel").classList.add("open");
+  document.getElementById("favPanel").classList.add("open");
 }
 
 // Function to close the side panel
 function closeFavPanel() {
-  document.getElementById("sidePanel").classList.remove("open");
+  document.getElementById("favPanel").classList.remove("open");
 }
 
 // Fetching languages and populating dropdowns
