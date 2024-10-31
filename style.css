@@ -447,7 +447,84 @@ body {
     cursor: pointer;
     margin-left: 320px;
 }
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.list li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+}
+
+
+/* Hover effects */
+.list li:hover {
+    background-color: #e04981;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* Style for the delete button icon */
+.delete-btn {
+    background: none;                
+    border: none;                   
+    color: #e74c3c;                 
+    font-size: 1.2rem;               
+    cursor: pointer;                
+    transition: color 0.3s ease;    
+    padding: 0;                     
+  }
   
+  /* Hover effect */
+  .delete-btn:hover {
+    color: #c0392b;
+  }
+  
+  /* Active effect (when clicked) */
+  .delete-btn:active {
+    transform: scale(0.9);       
+  }
+  
+
+/* Style for the delete button icon */
+.fav-btn {
+    background: none;               
+    border: none;                   
+    color: orange;                  
+    font-size: 1.2rem;               
+    cursor: pointer;                
+    transition: color 0.3s ease;     
+  }
+  
+  /* Hover effect */
+  .fav-btn:hover {
+    color: rgb(223, 149, 12);                  
+  }
+  
+  /* Active effect (when clicked) */
+  .fav-btn:active {
+    transform: scale(0.9);        
+  }
+
 /* media quiries */
 @media (max-width: 800px) {
     .container {

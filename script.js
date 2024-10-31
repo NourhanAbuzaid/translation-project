@@ -146,7 +146,15 @@ async function addToFavorite(translationId) {
 }
 
 favBtn.addEventListener('click', () => {
-  addToFavorite(lastTranslation.translationLogId);
+  try {
+    if (lastTranslation === null) {
+      alert('No translation to add to favorites');
+    }
+    addToFavorite(lastTranslation.translationLogId);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+
 });
 
 async function getFavourites() {
@@ -181,23 +189,22 @@ async function getFavourites() {
         const listItem = document.createElement('li');
         listItem.classList.add('favorite-item');
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.onclick = async () => {
+        const deleteIcon = document.createElement('button');
+        deleteIcon.classList.add('icon-button', 'delete-btn');
+        deleteIcon.innerHTML = '<ion-icon id="delete-btn" name="trash"></ion-icon>'; // Font Awesome icon
+        deleteIcon.onclick = async () => {
           await deleteFavorite(favorite.favoriteId);
           getFavourites();
         };
 
         listItem.innerHTML = `
                 <div id=${favorite.favoriteId}>
-                    <strong>${favorite.translationLog.sourceText}</strong> → ${favorite.translationLog.targetText}
+                    <strong dir="auto">${favorite.translationLog.sourceText}</strong> → ${favorite.translationLog.targetText}
                 </div>
                 <div class="timestamp">${new Date(favorite.translationLog.createdAt).toLocaleString()}</div>
             `;
-        listItem.appendChild(deleteBtn);
+        listItem.appendChild(deleteIcon);
         favoritesList.appendChild(listItem);
-        // favPanel.insertAdjacentHTML('beforeend', favItem);
       }
       );
     }
@@ -242,7 +249,7 @@ async function getHistory() {
       listItem.classList.add('history-item');
 
       const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Delete';
+      deleteBtn.innerHTML = '<ion-icon id="delete-btn" name="trash"></ion-icon>'; // Font Awesome icon
       deleteBtn.classList.add('delete-btn');
       deleteBtn.onclick = async () => {
         await deleteTranslation(translation.translationLogId);
@@ -250,7 +257,7 @@ async function getHistory() {
       };
 
       const favBtn = document.createElement('button');
-      favBtn.textContent = 'Add to favorite';
+      favBtn.innerHTML = '<ion-icon name="star"></ion-icon>'; // Font Awesome icon
       favBtn.classList.add('fav-btn');
       favBtn.onclick = async () => {
         await addToFavorite(translation.translationLogId);
@@ -259,13 +266,13 @@ async function getHistory() {
 
       listItem.innerHTML = `
               <div id=${translation.translationLogId}>
-                  <strong>${translation.sourceText}</strong> → ${translation.targetText}
+                  <strong dir="auto">${translation.sourceText}</strong> → ${translation.targetText}
               </div>
               <div class="timestamp">${new Date(translation.createdAt).toLocaleString()}</div>
           `;
 
-      listItem.appendChild(deleteBtn);
       listItem.appendChild(favBtn);
+      listItem.appendChild(deleteBtn);
       historyList.appendChild(listItem);
     });
   } catch (error) {
@@ -274,60 +281,60 @@ async function getHistory() {
 }
 async function deleteTranslation(id) {
   const options = {
-      method: 'DELETE',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-      }
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + authToken
+    }
   };
 
   try {
-      const response = await fetch(`https://localhost:7299/api/TranslationLogs/${id}`, options);
+    const response = await fetch(`https://localhost:7299/api/TranslationLogs/${id}`, options);
 
-      if (response.status === 401) {
-        alert('You are not authorized to access this page. Please login to continue.');
-        window.location.href = 'login.html';
-        return;
-      }
+    if (response.status === 401) {
+      alert('You are not authorized to access this page. Please login to continue.');
+      window.location.href = 'login.html';
+      return;
+    }
 
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      
-      getHistory();
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    getHistory();
 
   } catch (error) {
-      console.error('Error:', error);
+    console.error('Error:', error);
   }
 }
 
 async function deleteFavorite(id) {
   const options = {
-      method: 'DELETE',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-      }
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + authToken
+    }
   };
 
   try {
-      const response = await fetch(`https://localhost:7299/api/Favorites/${id}`, options);
+    const response = await fetch(`https://localhost:7299/api/Favorites/${id}`, options);
 
-      if (response.status === 401) {
-        alert('You are not authorized to access this page. Please login to continue.');
-        window.location.href = 'login.html';
-        return;
-      }
+    if (response.status === 401) {
+      alert('You are not authorized to access this page. Please login to continue.');
+      window.location.href = 'login.html';
+      return;
+    }
 
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-      
+
   } catch (error) {
-      console.error('Error:', error);
+    console.error('Error:', error);
   }
 }
 
