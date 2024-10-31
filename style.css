@@ -487,7 +487,7 @@ body {
 .delete-btn {
     background: none;                
     border: none;                   
-    color: #e74c3c;                 
+    color: var(--light-text-color);                
     font-size: 1.2rem;               
     cursor: pointer;                
     transition: color 0.3s ease;    
@@ -496,7 +496,7 @@ body {
   
   /* Hover effect */
   .delete-btn:hover {
-    color: #c0392b;
+    color: var(--primary-color);
   }
   
   /* Active effect (when clicked) */
@@ -509,7 +509,7 @@ body {
 .fav-btn {
     background: none;               
     border: none;                   
-    color: orange;                  
+    color: var(--light-text-color);                
     font-size: 1.2rem;               
     cursor: pointer;                
     transition: color 0.3s ease;     
@@ -517,7 +517,7 @@ body {
   
   /* Hover effect */
   .fav-btn:hover {
-    color: rgb(223, 149, 12);                  
+    color: var(--primary-color);                  
   }
   
   /* Active effect (when clicked) */
