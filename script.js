@@ -53,10 +53,10 @@ swapBtn.addEventListener("click", () => {
   inputTextElem.value = outputTextElem.value;
   outputTextElem.value = tempInputText;
 
-  translate(); // Re-translate after swapping
+  translate();
 });
 
-function translate() {
+async function translate(){
   const inputText = inputTextElem.value;
   const inputLanguage = inputLanguageDropdown.querySelector(".selected");
   const sourceLanguageId = inputLanguage.getAttribute("data-id");
@@ -79,11 +79,16 @@ function translate() {
     })
   };
   
-  fetch(url, options)
+  await fetch(url, options)
     .then((response) => {
       
-      if (response.status !== 200) {
-        throw new Error(`Request failed with status ${response.status}`);
+      if (response.tatus === 401) {
+        alert('You are not authorized to access this page. Please login to continue.');
+        window.location.href = 'login.html';
+      }
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.json();
     })
@@ -95,21 +100,30 @@ function translate() {
     });
 }
 
-// Debounce function to control the rate of translation calls
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
+async function addToFavorite(id) {
+  const options = {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + authToken
+      },
+      body: JSON.stringify({
+          translationLogId: id
+      })
   };
-}
 
-// Event listener for input text with debounce
-inputTextElem.addEventListener("input", debounce((e) => {
-  if (inputTextElem.value.length > 5000) {
-    inputTextElem.value = inputTextElem.value.slice(0, 5000);
+  try {
+      const response = await fetch('https://localhost:7299/api/Favourites', options);
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      alert('Translation added to favorites');
+      // getFavourites();
+  } catch (error) {
+      console.error('Error:', error);
   }
-}, 300));
+}
 
 // Document upload handler
 const uploadDocument = document.querySelector("#upload-document"),
@@ -164,6 +178,14 @@ inputTextElem.addEventListener("input", () => {
   inputChars.innerHTML = inputTextElem.value.length;
 });
 
+// Add event listener to translate when pressing Enter
+inputTextElem.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { // Check if the pressed key is Enter
+    e.preventDefault(); // Prevent the default action (like a form submission)
+    translate(); // Call the translate function
+  }
+});
+
 // Function to open the side panel
 function openFavPanel() {
   document.getElementById("sidePanel").classList.add("open");
@@ -189,6 +211,12 @@ async function fetchLanguages() {
 
   try {
     const response = await fetch('https://localhost:7299/api/Languages', options);
+    
+    if (response.status === 401) {
+      alert('You are not authorized to access this page. Please login to continue.');
+      window.location.href = 'login.html';
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
