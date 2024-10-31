@@ -137,8 +137,12 @@ async function addToFavorite(translationId) {
       return;
     }
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
+    if (!response.ok){
+      result = await response.json();
+      message = result.message
+      alert(`HTTP error! Status: ${message}`);
+      return
+    }
     alert('Translation added to favorites');
   } catch (error) {
     console.error('Error:', error);
@@ -244,7 +248,6 @@ async function getHistory() {
 
     // Loop through the translations to display them in the history list
     latestTranslations.reverse().forEach(translation => {
-      console.log(translation);
       const listItem = document.createElement('li');
       listItem.classList.add('history-item');
 
@@ -253,7 +256,7 @@ async function getHistory() {
       deleteBtn.classList.add('delete-btn');
       deleteBtn.onclick = async () => {
         await deleteTranslation(translation.translationLogId);
-        getHistoryList();
+        getHistory();
       };
 
       const favBtn = document.createElement('button');
@@ -261,7 +264,7 @@ async function getHistory() {
       favBtn.classList.add('fav-btn');
       favBtn.onclick = async () => {
         await addToFavorite(translation.translationLogId);
-        getHistoryList();
+        getHistory();
       };
 
       listItem.innerHTML = `
